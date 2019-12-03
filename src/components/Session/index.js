@@ -1,10 +1,5 @@
-import React from 'react';
+import AuthUserContext from './context';
+import withAuthentication from './withAuthentication';
+import withAuthorization from './withAuthorization';
 
-
-
-class Welcome extends React.Component {
-    render() {
-      return <h1>Hello, {this.props.name}</h1>;
-    }
-  }
-  export default Welcome;
+export { AuthUserContext, withAuthentication, withAuthorization };
