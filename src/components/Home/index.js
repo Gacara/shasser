@@ -1,14 +1,98 @@
-import React from 'react';
+import React, { Component } from 'react';
 
+import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 
-const HomePage = () => (
-  <div>
-    <h1>Tableau de chasse</h1>
-    <p>Ici seront entreposés vos shiny</p>
+class DashboardPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      empty: false,
+      loading: false,
+      pokemons: [],
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true });
+    const firebaseTemp = this.props.firebase;
+
+
+   
+        firebaseTemp
+        .pokemons(firebaseTemp.auth.W).on('value', (snapshot) => {
+        const pokemonsObject = snapshot.val();
+        if (pokemonsObject){
+          const pokemonsList = Object.keys(pokemonsObject).map((key) => ({
+            ...pokemonsObject[key],
+            name: key,
+          }));
+    
+          this.setState({
+            pokemons: pokemonsList,
+            loading: false,
+            empty: false,
+          });
+        }
+       else {
+        this.setState({
+          loading: true,
+          empty: true,
+        });
+       }
+      });
+      
+     
+    
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.pokemons(this.props.firebase.auth.W).off();
+  }
+
+  render() {
+    const { pokemons, loading, empty } = this.state;
+
+    return (
+      <div className="Landing">
+    <header className="Landing-header">
+      <div className="container">
+        <h1>Tableau de chasse</h1>
+
+        {loading && <div>Loading ...</div>}
+        {empty && <div>Vous n'avez capturé aucun shiny !</div>}
+        <PokemonList pokemons={pokemons} />
+      </div>
+      </header>
+    </div>
+    );
+  }
+}
+
+const PokemonList = ({ pokemons }) => (
+  
+  <div className="row">
+    {pokemons.map(pokemon => (
+        <div key={pokemon.num} className="col-md-3 col-sm-6 mb-5">
+          <a href={`/pokemon/${pokemon.name.toLowerCase()}`} className="card">
+            <div className="card-header">
+              <p className="custom-name">
+                {pokemon.num}
+  -
+                {pokemon.name}
+              </p>
+              <img className="" src={pokemon.img} alt={pokemon.name} />
+            </div>
+          </a>
+        <p>
+          {`Vu ${pokemon.compteur} fois `}
+        </p>
+      </div>
+    ))}
   </div>
 );
 
 const condition = authUser => !!authUser;
 
-export default withAuthorization(condition)(HomePage);
+export default withAuthorization(condition)(withFirebase(DashboardPage));

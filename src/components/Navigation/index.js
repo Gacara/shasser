@@ -35,11 +35,10 @@ const NavigationAuth = (props) => (
       <Nav className="mr-auto">
         <NavDropdown title="Mon compte" id="basic-nav-dropdown">
           <NavDropdown.Item href={ROUTES.ACCOUNT}>Profil</NavDropdown.Item>
-          <NavDropdown.Item href={ROUTES.HOME}>Tableau de chasse</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item href={ROUTES.LANDING}><SignOutButton /></NavDropdown.Item>
         </NavDropdown>
-        <Nav.Link href={ROUTES.ADMIN}>Admin</Nav.Link>
+        <Nav.Link href={ROUTES.HOME}>Tableau de chasse</Nav.Link>
       </Nav>
       <Form handleSubmit={props.handleSubmit} inline>
         <FormControl type="text" placeholder="Search" className="mr-sm-2" />
