@@ -1,9 +1,8 @@
 import data from '../../data.json';
 import {Image, Container, Row, Col} from 'react-bootstrap'
 import Bouton from '../Bouton';
-import React, { Component } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { withAuthorization } from '../Session';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
