@@ -45,7 +45,7 @@ class Firebase {
   users = () => this.db.ref('users');
 
   // *** Pokemon API ***
-  pokemon = uid => this.db.ref(`users/${uid}/pokemons/`);
+  pokemon = (uid,name) => this.db.ref(`users/${uid}/pokemons/${name}`);
   pokemons = uid => this.db.ref(`users/${uid}`);
 
   // *** Message API ***
