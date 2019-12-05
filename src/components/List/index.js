@@ -1,17 +1,12 @@
 import React from 'react';
 import Info from '../Info';
 
-const List =({data}) =>{
-    
-    return(
-    
-        <div className="row">
-        {data.pokemons.map((pokemons, index)=>(
-        <Info key={`pokemons`+ index}{...pokemons} />
-        ))}
-        
-        </div>
-        );
-}
+const List = ({ data }) => (
+  <div className="row">
+    {data.pokemons.map((pokemons, index) => (
+      <Info key={`pokemons`+ index} {...pokemons} />
+    ))}
+  </div>
+);
 
-export default List
+export default List;

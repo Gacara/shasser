@@ -10,28 +10,18 @@ import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import ShassePage from '../Shasse';
-import Message from '../Message';
-import Test from '../Test';
-
-
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
-
-
 const App = () => (
   <Router>
-    <div>
+    <div className="background-color">
       <Navigation />
 
-    
-      <Route exact path={ROUTES.POKEMON} component={ShassePage}/>
+      <Route exact path={ROUTES.POKEMON} component={ShassePage} />
       <Route exact path={ROUTES.LANDING} component={LandingPage} />
       <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route exact path="/test" component={Test}/>
-      <Route exact path="/message" component={Message}/>
-     
       <Route
         exact
         path={ROUTES.PASSWORD_FORGET}
@@ -45,7 +35,3 @@ const App = () => (
 );
 
 export default withAuthentication(App);
-
-
-
-

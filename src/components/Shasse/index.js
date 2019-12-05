@@ -1,13 +1,11 @@
 import data from '../../data.json';
 import {Image, Container, Row, Col} from 'react-bootstrap'
 import Bouton from '../Bouton';
-import React, { Component } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { withAuthorization } from '../Session';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-
 
 const ShassePage = () => (
   <div>
@@ -15,38 +13,59 @@ const ShassePage = () => (
   </div>
 );
 
-
-
 class ShasseBase extends React.Component{
 
   constructor(props) {
     super(props);
-    
     this.state = {  
       img : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].img,
       name : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].name,
       num : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].num,
       compteur : 0,
-      error: '', };
+      error: '', 
+      user: null
+    };
   }
 
+componentDidMount(){
 
-onSubmit = event => {
+  const {firebase} = this.props;
+  firebase.auth.onAuthStateChanged((user) => {
+  if (user) {
+    this.setState({user})
+    const userId = this.state.user.uid;
+    const pokeName = this.state.name;
+    const path = this;
+    
+    firebase.pokemon(userId,pokeName).once("value", function(data) {
+      if (data.val()){
+      const cpt= data.val().compteur;
+      path.setState({
+      compteur: cpt,
+        }); 
+      }
+    }); 
+   }
+  })
+};
+
+componentWillUnmount() {
+  this.props.firebase.pokemon().off();
+};
+
+onSubmit = (event) => {
   const {  name, num, compteur, img} = this.state;
-  const firebaseTemp = this.props.firebase;
+  const {firebase} = this.props;
 
-  firebaseTemp
-  .pokemon(firebaseTemp.auth.W,name)
+  firebase
+  .pokemon(firebase.auth.W,name)
   .set({
     num,
     img,
     compteur,
   })
-
-
   event.preventDefault();
 };
-
 
 onChange = event => {
   this.setState({ [event.target.name]: event.target.value });
@@ -54,7 +73,7 @@ onChange = event => {
 
 incrementCount= () => {
   this.setState({
-    compteur:this.state.compteur+1
+    compteur: +this.state.compteur +1,
   })
 }
 
@@ -77,7 +96,7 @@ handleSubmit(ev){
 }
 
     render(){
-      const {num, name, img, compteur, error} = this.state;
+      const {num, name, img, error} = this.state;
 
       return (
        
@@ -89,7 +108,7 @@ handleSubmit(ev){
   <Row>
     <Col xs={12} md={12}>
     <h2>{num} - {name}</h2>
-      <Image  rounded  src={img} alt={name}/>
+      <Image  className="info" src={img} alt={name}/>
     </Col>
     <Col xs={6} md={4}>
     <Bouton
@@ -97,12 +116,18 @@ handleSubmit(ev){
         task = { () => this.decrementCount() }
       />
       </Col>
-      <Col xs={6} md={4}>
-    <h2>Compteur: { compteur } </h2>
-    
+      <Col xs={4} md={4}>
+    <h2>Vu :</h2>
+    <input
+    className="custom-input"
+    name="compteur"
+    value={this.state.compteur}
+    onChange={this.onChange}
+    type="number"
+  />
    
     </Col>
-    <Col xs={6} md={4}>
+    <Col xs={4} md={4}>
       <Bouton
         title = { "+" }
         task = { () => this.incrementCount() }
@@ -126,9 +151,9 @@ handleSubmit(ev){
 
 const SubmitPokemon = (props) => (
 
-  
   <form onSubmit={props.onSubmit}>
   <input
+  hidden
     name="name"
     value={props.name}
     onChange={props.onChange}
@@ -136,6 +161,7 @@ const SubmitPokemon = (props) => (
     placeholder="Name"
   />
   <input
+  hidden
     name="num"
     value={props.num}
     onChange={props.onChange}
@@ -143,24 +169,21 @@ const SubmitPokemon = (props) => (
     placeholder="pid"
   />
 
-  <button   className="custom-a custom-a-bis" type="submit">
-    Ajouter {props.name}
+  <button className="custom-a custom-a-bis" type="submit">
+    Mettre à jour {props.name}
   </button>
-
   {props.error && <p>{props.error.message}</p>}
 </form>
-
 );
-
 
 const SignInLink = () => (
   <p>
-    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter 
+    <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
   </p>
 );
 
 const Shasse = withRouter(withFirebase(ShasseBase));
-
 
 export default ShassePage;
 
