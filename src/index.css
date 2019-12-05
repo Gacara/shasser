@@ -92,9 +92,7 @@ html{
 }
 
 
-/*
-SCROLL BAR
-*/
+/* SCROLL BAR */
 
 
 ::-webkit-scrollbar-track
@@ -114,7 +112,7 @@ SCROLL BAR
 	background-color: #000000;	
 }
 
-/* CUSTOM H1*/
+/* CUSTOM H1 */
 .custom-h1{
   font-size: 1.5rem;
   color: #ffffff!important;
@@ -142,7 +140,7 @@ SCROLL BAR
   text-decoration: none!important;
 }
 
-/* CUSTOME P */
+/* CUSTOM P */
 .custom-p{
   padding-top: 10px;
     font-size: 3rem;
@@ -167,4 +165,17 @@ SCROLL BAR
   padding: 1%;
   text-decoration: none!important;
   border-color: #b9bbbd!important;
+}
+
+
+
+/* CUSTOM INPUT */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.custom-input{
+  text-align: center;
 }
