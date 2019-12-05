@@ -36,18 +36,17 @@ componentDidMount(){
     const userId = this.state.user.uid;
     const pokeName = this.state.name;
     const path = this;
-
- firebase.pokemon(userId,pokeName).once("value", function(data) {
-  if (data.val()){
-    const cpt= data.val().compteur;
-    path.setState({
+    
+    firebase.pokemon(userId,pokeName).once("value", function(data) {
+      if (data.val()){
+      const cpt= data.val().compteur;
+      path.setState({
       compteur: cpt,
+        }); 
+      }
     }); 
-  }
-}); 
-  }
-})
-
+   }
+  })
 };
 
 componentWillUnmount() {
@@ -67,7 +66,6 @@ onSubmit = (event) => {
   })
   event.preventDefault();
 };
-
 
 onChange = event => {
   this.setState({ [event.target.name]: event.target.value });
@@ -126,7 +124,6 @@ handleSubmit(ev){
     value={this.state.compteur}
     onChange={this.onChange}
     type="number"
-    
   />
    
     </Col>
@@ -172,25 +169,21 @@ const SubmitPokemon = (props) => (
     placeholder="pid"
   />
 
-  <button   className="custom-a custom-a-bis" type="submit">
+  <button className="custom-a custom-a-bis" type="submit">
     Mettre à jour {props.name}
   </button>
-
   {props.error && <p>{props.error.message}</p>}
 </form>
-
 );
-
-
 
 const SignInLink = () => (
   <p>
-    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
+    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter 
+    <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
   </p>
 );
 
 const Shasse = withRouter(withFirebase(ShasseBase));
-
 
 export default ShassePage;
 
