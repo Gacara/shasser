@@ -102,48 +102,51 @@ handleSubmit(ev){
        
         
     <div className="Landing">
-      <header className="Landing-header">
+      <div className="Landing-header">
       <Container>
-      
-  <Row>
-    <Col xs={12} md={12}>
-    <h2>{num} - {name}</h2>
-      <Image  className="info" src={img} alt={name}/>
-    </Col>
-    <Col xs={6} md={4}>
-    <Bouton
-        title = { "-" }
-        task = { () => this.decrementCount() }
-      />
-      </Col>
-      <Col xs={4} md={4}>
-    <h2>Vu :</h2>
-    <input
-    className="custom-input"
-    name="compteur"
-    value={this.state.compteur}
-    onChange={this.onChange}
-    type="number"
-  />
-   
-    </Col>
-    <Col xs={4} md={4}>
-      <Bouton
-        title = { "+" }
-        task = { () => this.incrementCount() }
-      />
-      </Col>
-      
-  </Row>
-</Container>
+        <Row>
+          <Col xs={12} md={12}>
+          <h2>
+            {num}
+            -
+            {name}
+          </h2>
+          <Image className="info" src={img} alt={name}/>
+          </Col>
+          <Col xs={6} md={4}>
+            <Bouton
+            title = { "-" }
+            task = { () => this.decrementCount() }
+            />
+          </Col>
+          <Col xs={4} md={4}>
+            <h2>
+            Vu :
+            </h2>
+            <input
+            className="custom-input"
+            name="compteur"
+            value={this.state.compteur}
+            onChange={this.onChange}
+            type="number"
+            />
+          </Col>
+          <Col xs={4} md={4}>
+            <Bouton
+            title = { "+" }
+            task = { () => this.incrementCount() }
+            />
+          </Col>
+        </Row>
+      </Container>
 
 <AuthUserContext.Consumer>
       {authUser =>
         !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange}onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
       }
     </AuthUserContext.Consumer>
-        </header>
-        <a className="custom-a custom-a-bis" href={ROUTES.LANDING}>Retour</a>
+        <a className="custom-a" href={ROUTES.LANDING}>Retour</a>
+        </div>
     </div>
   );
 }
@@ -169,7 +172,7 @@ const SubmitPokemon = (props) => (
     placeholder="pid"
   />
 
-  <button className="custom-a custom-a-bis" type="submit">
+  <button className="custom-refresh-button" type="submit">
     Mettre à jour {props.name}
   </button>
   {props.error && <p>{props.error.message}</p>}
