@@ -16,11 +16,10 @@ class DashboardPage extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    const firebaseTemp = this.props.firebase;
+    const {firebase} = this.props;
 
-
-    firebaseTemp
-      .pokemons(firebaseTemp.auth.W).on('value', (snapshot) => {
+    firebase
+      .pokemons(firebase.auth.W).on('value', (snapshot) => {
         const pokemonsObject = snapshot.val();
         if (pokemonsObject) {
           const pokemonsList = Object.keys(pokemonsObject).map((key) => ({
@@ -43,7 +42,8 @@ class DashboardPage extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.pokemons(this.props.firebase.auth.W).off();
+    const {firebase} = this.props;
+    firebase.pokemons(firebase.auth.W).off();
   }
 
   render() {
@@ -55,7 +55,7 @@ class DashboardPage extends Component {
           <div className="container">
             <h1>Tableau de chasse</h1>
 
-            {loading && <div>Loading ...</div>}
+            {loading && <div>Chargement ...</div>}
             {empty && <div>Vous n'avez croisé aucun Pokemon !</div>}
             <PokemonList pokemons={pokemons} />
           </div>
@@ -70,20 +70,20 @@ const PokemonList = ({ pokemons }) => (
   <div className="row">
     {pokemons.map((pokemon) => (
       <div key={pokemon.num} className="col-md-3 col-sm-6 mb-5">
-          <a href={`/pokemon/${pokemon.name.toLowerCase()}`} className="card">
-            <div className="card-header">
-              <p className="custom-name">
-                {pokemon.num}
+        <a href={`/pokemon/${pokemon.name.toLowerCase()}`} className="card">
+          <div className="card-header">
+            <p className="custom-name">
+              {pokemon.num}
   -
-                {pokemon.name}
-              </p>
-              <img className="" src={pokemon.img} alt={pokemon.name} />
-            </div>
-          </a>
-          <p>
+              {pokemon.name}
+            </p>
+            <img className="" src={pokemon.img} alt={pokemon.name} />
+          </div>
+        </a>
+        <p>
           {`Vu ${pokemon.compteur} fois `}
         </p>
-        </div>
+      </div>
     ))}
   </div>
 );
