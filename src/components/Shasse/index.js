@@ -17,7 +17,6 @@ class ShasseBase extends React.Component{
 
   constructor(props) {
     super(props);
-    
     this.state = {  
       img : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].img,
       name : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].name,
@@ -34,11 +33,10 @@ componentDidMount(){
   firebase.auth.onAuthStateChanged((user) => {
   if (user) {
     this.setState({user})
-    
     const userId = this.state.user.uid;
     const pokeName = this.state.name;
     const path = this;
-
+    
     firebase.pokemon(userId,pokeName).once("value", function(data) {
       if (data.val()){
       const cpt= data.val().compteur;
