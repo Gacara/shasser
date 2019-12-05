@@ -5,7 +5,10 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignUpPage = () => (
-  <Container className="">
+  <Container className="custom-h1">
+    <h1>
+    Créer un compte : 
+    </h1>
     <SignUpForm />
   </Container>
 );

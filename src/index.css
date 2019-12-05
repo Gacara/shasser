@@ -114,6 +114,11 @@ SCROLL BAR
 	background-color: #000000;	
 }
 
+/* CUSTOM H1*/
+.custom-h1{
+  font-size: 1.5rem;
+  color: #ffffff!important;
+}
 
 
 /* CUSTOM A */
