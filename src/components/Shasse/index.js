@@ -1,5 +1,5 @@
 import data from '../../data.json';
-import {Image, Container, Row, Col} from 'react-bootstrap'
+import {Image, Container, Row, Col, Table} from 'react-bootstrap'
 import Bouton from '../Bouton';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
@@ -28,7 +28,6 @@ class ShasseBase extends React.Component{
   }
 
 componentDidMount(){
-
   const {firebase} = this.props;
   firebase.auth.onAuthStateChanged((user) => {
   if (user) {
@@ -53,7 +52,8 @@ componentWillUnmount() {
   this.props.firebase.pokemon().off();
 };
 
-onSubmit = (event) => {
+
+onSubmit(event) {
   const {  name, num, compteur, img} = this.state;
   const {firebase} = this.props;
 
@@ -66,6 +66,11 @@ onSubmit = (event) => {
   })
   event.preventDefault();
 };
+
+routeChange(){
+  const path = `/`;
+  this.props.history.push(path);
+}
 
 onChange = event => {
   this.setState({ [event.target.name]: event.target.value });
@@ -104,14 +109,121 @@ handleSubmit(ev){
     <div className="Landing">
       <div className="Landing-header">
       <Container>
+        <Row className="justify-content-md-center">
+          <Col sm={4}>
+          </Col>
+        <Col className="d-flex justify-content-center align-items-center" sm={4}>
+          <h2>
+            {`${num} - ${name}`}
+          </h2>
+        </Col>
+        <Col sm={4}>
+          <AuthUserContext.Consumer>
+            {authUser =>
+            !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange}onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
+            }
+          </AuthUserContext.Consumer>
+        </Col>
+        </Row>
+        
+        <Row className="justify-content-md-center">
+        <Col sm={4}>
+        <Table className="custom-table" striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>Rencontres</th>
+              <th>Sans Chroma</th>
+              <th>Avec Chroma</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>1/4096</td>
+              <td>1/1365</td>
+              
+            </tr>
+            <tr>
+              <td>20</td>
+              <td>1/2048</td>
+              <td>1/1024</td>
+              
+            </tr>
+            <tr>
+              <td>50</td>
+              <td>1/1365</td>
+              <td>1/819</td>
+            </tr>
+            <tr>
+              <td>100</td>
+              <td>1/1024</td>
+              <td>1/682</td>
+            </tr>
+            <tr>
+              <td>200</td>
+              <td>1/819</td>
+              <td>1/585</td>
+            </tr>
+            <tr>
+              <td>500</td>
+              <td>1/682</td>
+              <td>1/512</td>
+            </tr>
+          </tbody>
+        </Table>
+
+        </Col>
+        <Col sm={4}>
+          <Image className="info" src={img} alt={name}/>
+          <h2>Vu :</h2>
+            <input
+            className="custom-input"
+            name="compteur"
+            value={this.state.compteur}
+            onChange={this.onChange}
+            type="number"
+            />
+        </Col>
+        <Col sm={4}>
+        <Table className="custom-table" striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>Masuda </th>
+              <th>Sans Chroma</th>
+              <th>Avec Chroma</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Oeuf</td>
+              <td>1/683</td>
+              <td>1/512</td>
+            </tr>
+          </tbody>
+        </Table>
+        </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+        
+        <Col sm={12}>
+        </Col>
+
+        </Row>
+        <Row className="justify-content-md-center">
+        <Col sm={4}>
+          <button onClick={this.routeChange.bind(this)} className="custom-refresh-button">
+            Retour
+          </button>
+        </Col>
+        <Col sm={5}>sm=6</Col>
+        <Col sm={3}>sm=3</Col>
+        </Row>
+
+
+
         <Row>
           <Col xs={12} md={12}>
-          <h2>
-            {num}
-            -
-            {name}
-          </h2>
-          <Image className="info" src={img} alt={name}/>
+          
           </Col>
           <Col xs={6} md={4}>
             <Bouton
@@ -120,16 +232,7 @@ handleSubmit(ev){
             />
           </Col>
           <Col xs={4} md={4}>
-            <h2>
-            Vu :
-            </h2>
-            <input
-            className="custom-input"
-            name="compteur"
-            value={this.state.compteur}
-            onChange={this.onChange}
-            type="number"
-            />
+            
           </Col>
           <Col xs={4} md={4}>
             <Bouton
@@ -138,14 +241,7 @@ handleSubmit(ev){
             />
           </Col>
         </Row>
-      </Container>
-
-<AuthUserContext.Consumer>
-      {authUser =>
-        !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange}onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
-      }
-    </AuthUserContext.Consumer>
-        <a className="custom-a" href={ROUTES.LANDING}>Retour</a>
+      </Container>        
         </div>
     </div>
   );
@@ -172,7 +268,7 @@ const SubmitPokemon = (props) => (
     placeholder="pid"
   />
 
-  <button className="custom-refresh-button" type="submit">
+  <button className="custom-upload-button" type="submit">
     Mettre à jour {props.name}
   </button>
   {props.error && <p>{props.error.message}</p>}
@@ -181,8 +277,8 @@ const SubmitPokemon = (props) => (
 
 const SignInLink = () => (
   <p>
-    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter 
-    <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
+    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter  
+    <Link to={ROUTES.SIGN_IN}> Se connecter</Link>
   </p>
 );
 
