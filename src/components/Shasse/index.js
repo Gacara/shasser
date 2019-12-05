@@ -7,7 +7,6 @@ import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
-
 const ShassePage = () => (
   <div>
     <Shasse />
@@ -155,7 +154,6 @@ handleSubmit(ev){
 
 const SubmitPokemon = (props) => (
 
-  
   <form onSubmit={props.onSubmit}>
   <input
   hidden
