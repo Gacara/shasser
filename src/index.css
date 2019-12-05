@@ -13,18 +13,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+html{
+  background-color: #282c34;
+}
 
 
 /*NAVIGATION BAR */
 
 .nav-margin-bottom{
-
-  margin-bottom: 5vh;
+  margin-bottom: 10vh;
 }
 
 
 .Landing {
-  padding-top:5vh;
   text-align: center;
   background-color: #282c34;
 }
@@ -138,13 +139,11 @@ SCROLL BAR
 
 
 
-/* CUSTOM INPUT */
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+/* CUSTOM FORM */
+.background-color{
+  background-color: #282c34;
 }
 
-.custom-input{
-  text-align: center;
+.margin-top-bot{
+  margin: 25px 0px 25px 0px;
 }

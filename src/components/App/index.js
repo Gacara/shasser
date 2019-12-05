@@ -15,7 +15,7 @@ import { withAuthentication } from '../Session';
 
 const App = () => (
   <Router>
-    <div>
+    <div className="background-color">
       <Navigation />
 
       <Route exact path={ROUTES.POKEMON} component={ShassePage} />

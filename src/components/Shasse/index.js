@@ -7,14 +7,11 @@ import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
-
 const ShassePage = () => (
   <div>
     <Shasse />
   </div>
 );
-
-
 
 class ShasseBase extends React.Component{
 
@@ -31,9 +28,6 @@ class ShasseBase extends React.Component{
     };
   }
 
-  
-
-
 componentDidMount(){
 
   const {firebase} = this.props;
@@ -41,21 +35,20 @@ componentDidMount(){
   if (user) {
     this.setState({user})
     
-const userId = this.state.user.uid;
-const pokeName = this.state.name;
-const path = this;
+    const userId = this.state.user.uid;
+    const pokeName = this.state.name;
+    const path = this;
 
- firebase.pokemon(userId,pokeName).once("value", function(data) {
-  if (data.val()){
-    const cpt= data.val().compteur;
-    path.setState({
+    firebase.pokemon(userId,pokeName).once("value", function(data) {
+      if (data.val()){
+      const cpt= data.val().compteur;
+      path.setState({
       compteur: cpt,
+        }); 
+      }
     }); 
-  }
-}); 
-  }
-})
-
+   }
+  })
 };
 
 componentWillUnmount() {
@@ -75,7 +68,6 @@ onSubmit = (event) => {
   })
   event.preventDefault();
 };
-
 
 onChange = event => {
   this.setState({ [event.target.name]: event.target.value });
@@ -134,7 +126,6 @@ handleSubmit(ev){
     value={this.state.compteur}
     onChange={this.onChange}
     type="number"
-    
   />
    
     </Col>
@@ -162,7 +153,6 @@ handleSubmit(ev){
 
 const SubmitPokemon = (props) => (
 
-  
   <form onSubmit={props.onSubmit}>
   <input
   hidden
@@ -181,25 +171,21 @@ const SubmitPokemon = (props) => (
     placeholder="pid"
   />
 
-  <button   className="custom-a custom-a-bis" type="submit">
+  <button className="custom-a custom-a-bis" type="submit">
     Mettre à jour {props.name}
   </button>
-
   {props.error && <p>{props.error.message}</p>}
 </form>
-
 );
-
-
 
 const SignInLink = () => (
   <p>
-    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
+    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter 
+    <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
   </p>
 );
 
 const Shasse = withRouter(withFirebase(ShasseBase));
-
 
 export default ShassePage;
 

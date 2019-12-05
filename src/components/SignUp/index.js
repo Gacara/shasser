@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-
+import {Image, Container, Button, Col, Form, Row} from 'react-bootstrap'
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
+  <Container className="">
     <SignUpForm />
-  </div>
+  </Container>
 );
 
 const INITIAL_STATE = {
@@ -32,7 +31,6 @@ class SignUpFormBase extends Component {
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        // Create a user in your Firebase realtime database
         this.props.firebase
           .user(authUser.user.uid)
           .set({
@@ -74,41 +72,62 @@ class SignUpFormBase extends Component {
       username === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="username"
-          value={username}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign Up
-        </button>
+      <>
+      <Form 
+        onSubmit={this.onSubmit}
+        >
+        <Form.Row>
+          <Col className="margin-top-bot">
+            <Form.Control 
+              size="lg"
+              name="username"
+              value={username}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Pseudonyme" />
+          </Col>
+          <Col  className="margin-top-bot">
+            <Form.Control 
+              size="lg"
+              name="email"
+              value={email}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Email" />
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col  className="margin-top-bot">
+            <Form.Control 
+              size="lg"
+              name="passwordOne"
+              value={passwordOne}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Mot de passe"/>
+         </Col>
+         <Col  className="margin-top-bot">
+            <Form.Control 
+              size="lg"
+              name="passwordTwo"
+              value={passwordTwo}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Confirmer le mdp" />
+         </Col>
+        </Form.Row>
+          <Row className="margin-top-bot justify-content-md-center">
+            <Button 
+            disabled={isInvalid}
+            size="lg"
+            type="submit">
+            Inscription
+            </Button>
+            {error && <p>{error.message}</p>}
+          </Row>
+        </Form>
 
-        {error && <p>{error.message}</p>}
-      </form>
+      </>
     );
   }
 }
