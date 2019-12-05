@@ -26,9 +26,42 @@ class ShasseBase extends React.Component{
       name : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].name,
       num : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].num,
       compteur : 0,
-      error: '', };
+      error: '', 
+      user: null
+    };
   }
 
+  
+
+
+componentDidMount(){
+
+
+  this.props.firebase.auth.onAuthStateChanged((user) => {
+  if (user) {
+    this.setState({user})
+    
+const firebaseTemp = this.props.firebase;
+const userId = this.state.user.uid;
+const pokeName = this.state.name;
+const path = this;
+
+ firebaseTemp.pokemon(userId,pokeName).once("value", function(data) {
+  if (data.val()){
+    const cpt= data.val().compteur;
+    path.setState({
+      compteur: cpt,
+    }); 
+  }
+}); 
+  }
+})
+
+};
+
+componentWillUnmount() {
+  this.props.firebase.pokemon().off();
+}
 
 onSubmit = event => {
   const {  name, num, compteur, img} = this.state;
@@ -53,7 +86,7 @@ onChange = event => {
 
 incrementCount= () => {
   this.setState({
-    compteur:this.state.compteur+1
+    compteur:(this.state.compteur)*1 +1,
   })
 }
 
@@ -76,7 +109,7 @@ handleSubmit(ev){
 }
 
     render(){
-      const {num, name, img, compteur, error} = this.state;
+      const {num, name, img, error} = this.state;
 
       return (
        
@@ -88,7 +121,7 @@ handleSubmit(ev){
   <Row>
     <Col xs={12} md={12}>
     <h2>{num} - {name}</h2>
-      <Image  rounded  src={img} alt={name}/>
+      <Image  className="info" src={img} alt={name}/>
     </Col>
     <Col xs={6} md={4}>
     <Bouton
@@ -96,12 +129,19 @@ handleSubmit(ev){
         task = { () => this.decrementCount() }
       />
       </Col>
-      <Col xs={6} md={4}>
-    <h2>Compteur: { compteur } </h2>
+      <Col xs={4} md={4}>
+    <h2>Vu :</h2>
+    <input
+    className="custom-input"
+    name="compteur"
+    value={this.state.compteur}
+    onChange={this.onChange}
+    type="number"
     
+  />
    
     </Col>
-    <Col xs={6} md={4}>
+    <Col xs={4} md={4}>
       <Bouton
         title = { "+" }
         task = { () => this.incrementCount() }
@@ -128,6 +168,7 @@ const SubmitPokemon = (props) => (
   
   <form onSubmit={props.onSubmit}>
   <input
+  hidden
     name="name"
     value={props.name}
     onChange={props.onChange}
@@ -135,6 +176,7 @@ const SubmitPokemon = (props) => (
     placeholder="Name"
   />
   <input
+  hidden
     name="num"
     value={props.num}
     onChange={props.onChange}
@@ -143,7 +185,7 @@ const SubmitPokemon = (props) => (
   />
 
   <button   className="custom-a custom-a-bis" type="submit">
-    Ajouter {props.name}
+    Mettre à jour {props.name}
   </button>
 
   {props.error && <p>{props.error.message}</p>}

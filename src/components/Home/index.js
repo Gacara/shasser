@@ -19,32 +19,27 @@ class DashboardPage extends Component {
     const firebaseTemp = this.props.firebase;
 
 
-   
-        firebaseTemp
-        .pokemons(firebaseTemp.auth.W).on('value', (snapshot) => {
+    firebaseTemp
+      .pokemons(firebaseTemp.auth.W).on('value', (snapshot) => {
         const pokemonsObject = snapshot.val();
-        if (pokemonsObject){
+        if (pokemonsObject) {
           const pokemonsList = Object.keys(pokemonsObject).map((key) => ({
             ...pokemonsObject[key],
             name: key,
           }));
-    
+
           this.setState({
             pokemons: pokemonsList,
             loading: false,
             empty: false,
           });
+        } else {
+          this.setState({
+            loading: true,
+            empty: true,
+          });
         }
-       else {
-        this.setState({
-          loading: true,
-          empty: true,
-        });
-       }
       });
-      
-     
-    
   }
 
   componentWillUnmount() {
@@ -56,25 +51,25 @@ class DashboardPage extends Component {
 
     return (
       <div className="Landing">
-    <header className="Landing-header">
-      <div className="container">
-        <h1>Tableau de chasse</h1>
+        <header className="Landing-header">
+          <div className="container">
+            <h1>Tableau de chasse</h1>
 
-        {loading && <div>Loading ...</div>}
-        {empty && <div>Vous n'avez capturé aucun shiny !</div>}
-        <PokemonList pokemons={pokemons} />
+            {loading && <div>Loading ...</div>}
+            {empty && <div>Vous n'avez croisé aucun Pokemon !</div>}
+            <PokemonList pokemons={pokemons} />
+          </div>
+        </header>
       </div>
-      </header>
-    </div>
     );
   }
 }
 
 const PokemonList = ({ pokemons }) => (
-  
+
   <div className="row">
-    {pokemons.map(pokemon => (
-        <div key={pokemon.num} className="col-md-3 col-sm-6 mb-5">
+    {pokemons.map((pokemon) => (
+      <div key={pokemon.num} className="col-md-3 col-sm-6 mb-5">
           <a href={`/pokemon/${pokemon.name.toLowerCase()}`} className="card">
             <div className="card-header">
               <p className="custom-name">
@@ -85,14 +80,14 @@ const PokemonList = ({ pokemons }) => (
               <img className="" src={pokemon.img} alt={pokemon.name} />
             </div>
           </a>
-        <p>
+          <p>
           {`Vu ${pokemon.compteur} fois `}
         </p>
-      </div>
+        </div>
     ))}
   </div>
 );
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default withAuthorization(condition)(withFirebase(DashboardPage));

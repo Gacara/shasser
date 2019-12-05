@@ -41,6 +41,18 @@ code {
   color: white;
 }
 
+/* BUTTON ROUND */
+.round-button{
+  height: auto;
+    width: 80px;
+    border-radius: 50%;
+    font-size: 3rem;
+    color: #ffffff!important;
+    background-color: black;
+    margin: 50px 0 50px 0;
+    text-decoration: none!important;
+
+}
 
 
 /*CARD*/
@@ -64,19 +76,12 @@ code {
   text-decoration: none!important;
 }
 
-.custom-a-bis{
-  font-size: 1.5rem;
-  border-radius: 15px;
-  color: #ffffff!important;
-  background-color: black;
-  padding: 1%;
-  margin: 50px 0 50px 0;
-  text-decoration: none!important;
-}
-
-.custom-p{
-  padding-top: 10px;
-    font-size: 3rem;
+/*   INFO  */
+.info{
+  border:0px!important;
+  background: rgb(136,94,26);
+  background: linear-gradient(0deg, rgba(136,94,26,1) 9%, rgba(95,217,144,1) 18%, rgba(50,255,250,1) 29%, rgba(50,255,250,1) 72%, rgba(255,255,255,1) 82%)!important;
+  width: 25%;
 }
 
 
@@ -120,5 +125,26 @@ SCROLL BAR
   border-radius: 15px;
   color: #ffffff!important;
   background-color: black;
+  padding: 1%;
+  margin: 50px 0 50px 0;
   text-decoration: none!important;
+}
+
+/* CUSTOME P */
+.custom-p{
+  padding-top: 10px;
+    font-size: 3rem;
+}
+
+
+
+/* CUSTOM INPUT */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.custom-input{
+  text-align: center;
 }
