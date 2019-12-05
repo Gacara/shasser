@@ -15,7 +15,6 @@ class AdminPage extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-
     this.props.firebase.users().on('value', (snapshot) => {
       const usersObject = snapshot.val();
 
@@ -55,19 +54,22 @@ const UserList = ({ users }) => (
     {users.map(user => (
       <li key={user.uid}>
         <span>
-          <strong>ID:</strong> {user.uid}
+          <strong>ID:</strong>
+          {user.uid}
         </span>
         <span>
-          <strong>E-Mail:</strong> {user.email}
+          <strong>E-Mail:</strong>
+          {user.email}
         </span>
         <span>
-          <strong>Username:</strong> {user.username}
+          <strong>Username:</strong>
+          {user.username}
         </span>
       </li>
     ))}
   </ul>
 );
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default withAuthorization(condition)(withFirebase(AdminPage));

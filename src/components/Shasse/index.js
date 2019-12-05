@@ -36,17 +36,16 @@ class ShasseBase extends React.Component{
 
 componentDidMount(){
 
-
-  this.props.firebase.auth.onAuthStateChanged((user) => {
+  const {firebase} = this.props;
+  firebase.auth.onAuthStateChanged((user) => {
   if (user) {
     this.setState({user})
     
-const firebaseTemp = this.props.firebase;
 const userId = this.state.user.uid;
 const pokeName = this.state.name;
 const path = this;
 
- firebaseTemp.pokemon(userId,pokeName).once("value", function(data) {
+ firebase.pokemon(userId,pokeName).once("value", function(data) {
   if (data.val()){
     const cpt= data.val().compteur;
     path.setState({
@@ -61,21 +60,19 @@ const path = this;
 
 componentWillUnmount() {
   this.props.firebase.pokemon().off();
-}
+};
 
-onSubmit = event => {
+onSubmit = (event) => {
   const {  name, num, compteur, img} = this.state;
-  const firebaseTemp = this.props.firebase;
+  const {firebase} = this.props;
 
-  firebaseTemp
-  .pokemon(firebaseTemp.auth.W,name)
+  firebase
+  .pokemon(firebase.auth.W,name)
   .set({
     num,
     img,
     compteur,
   })
-
-
   event.preventDefault();
 };
 
@@ -194,9 +191,10 @@ const SubmitPokemon = (props) => (
 );
 
 
+
 const SignInLink = () => (
   <p>
-    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
   </p>
 );
 

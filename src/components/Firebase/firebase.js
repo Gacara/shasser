@@ -48,10 +48,6 @@ class Firebase {
   pokemon = (uid,name) => this.db.ref(`users/${uid}/pokemons/${name}`);
   pokemons = uid => this.db.ref(`users/${uid}/pokemons`);
 
-  // *** Message API ***
-  /*message = uid => this.db.ref(`messages/${uid}`);
-  messages = () => this.db.ref('messages');*/
-
 }
 
 export default Firebase;
