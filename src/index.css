@@ -23,6 +23,12 @@ html{
 .nav-margin-bottom{
   margin-bottom: 10vh;
 }
+.navbar-brand{
+  font-size: 2rem!important;
+  margin-right: 3rem!important;
+  padding-top: 0rem!important;
+  padding-bottom: .5rem!important;
+}
 
 
 .Landing {
@@ -146,4 +152,14 @@ SCROLL BAR
 
 .margin-top-bot{
   margin: 25px 0px 25px 0px;
+}
+
+.custom-button{
+  font-size: 1.5rem!important;
+  border-radius: 15px;
+  color: #ffffff!important;
+  background-color: black!important;
+  padding: 1%;
+  text-decoration: none!important;
+  border-color: #b9bbbd!important;
 }

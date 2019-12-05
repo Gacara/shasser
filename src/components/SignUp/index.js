@@ -119,6 +119,7 @@ class SignUpFormBase extends Component {
           <Row className="margin-top-bot justify-content-md-center">
             <Button 
             disabled={isInvalid}
+            className="custom-button"
             size="lg"
             type="submit">
             Inscription
