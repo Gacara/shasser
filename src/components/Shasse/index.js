@@ -86,7 +86,7 @@ onChange = event => {
 
 incrementCount= () => {
   this.setState({
-    compteur:(this.state.compteur)*1 +1,
+    compteur: +this.state.compteur +1,
   })
 }
 
