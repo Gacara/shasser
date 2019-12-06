@@ -128,8 +128,9 @@ handleSubmit(ev){
           </Col>
           <Col sm={4}>
             <AuthUserContext.Consumer>
-              {authUser =>
-              !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange}onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
+              {
+              (authUser) =>
+              !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange} onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
               }
             </AuthUserContext.Consumer>
           </Col>
