@@ -167,6 +167,10 @@ handleSubmit(ev){
               </tr>
             </tbody>
           </Table>
+          <Bouton
+              title = { "+" }
+              task = { () => this.incrementCount() }
+              />
           </Col>
           </Row>
           <Row className="justify-content-md-center">
@@ -187,10 +191,6 @@ handleSubmit(ev){
             }
           </Col>
           <Col sm={4}>
-          <Bouton
-              title = { "+" }
-              task = { () => this.incrementCount() }
-              />
           </Col>
           </Row>
         </Container>  

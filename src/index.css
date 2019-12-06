@@ -51,14 +51,13 @@ html{
 /* BUTTON ROUND */
 .round-button{
   height: auto;
-    width: 80px;
-    border-radius: 50%;
-    font-size: 3rem;
-    color: #ffffff!important;
-    background-color: black;
-    margin: 50px 0 50px 0;
-    text-decoration: none!important;
-
+  width: 150px;
+  border-radius: 50%;
+  font-size: 6rem;
+  color: #ffffff!important;
+  background-color: black;
+  margin: 50px 0 50px 0;
+  text-decoration: none!important;
 }
 
 /*CARD*/
