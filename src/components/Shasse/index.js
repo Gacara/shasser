@@ -83,7 +83,13 @@ routeChange(){
 }
 
 onChange = event => {
-  this.setState({ [event.target.name]: event.target.value });
+  if ( !event.target.value){
+    this.setState({ [event.target.name]: 0 });
+    event.target.value = 0;
+  }
+    
+
+    this.setState({ [event.target.name]: parseInt(event.target.value, 10)});
 };
 
 incrementCount= () => {
@@ -96,7 +102,7 @@ decrementCount= () => {
   this.setState({
     compteur:this.state.compteur-1,
   })
-  if (this.state.compteur <= 0 ){
+  if (this.state.compteur <= 0){
     this.setState({
       compteur:0,
     })
@@ -104,10 +110,10 @@ decrementCount= () => {
 }
 
 handleSubmit(ev){
-  ev.preventDefault();
   this.setState({
       compteur: new FormData(ev.currentTarget).get('compteur'),
   });
+  ev.preventDefault();
 }
 
     render(){
@@ -230,8 +236,8 @@ const SubmitPokemon = (props) => (
 
 const SignInLink = () => (
   <p>
-    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter 
-    <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
+    Pour ajouter des Pokémons à votre dashboard, veuillez vous 
+    <Link to={ROUTES.SIGN_IN}> connecter</Link>
   </p>
 );
 
