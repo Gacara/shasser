@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
+import {Container, Button, Col, Form, Row} from 'react-bootstrap'
 import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
+  <Container className="custom-h1">
+    <h1>
+    Se connecter : 
+    </h1>
     <SignInForm />
     <PasswordForgetLink />
     <SignUpLink />
-  </div>
+  </Container>
 );
 
 const INITIAL_STATE = {
@@ -55,27 +57,42 @@ class SignInFormBase extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
+      <>
+      <Form onSubmit={this.onSubmit}>
+        <Form.Row>
+        <Col  className="margin-top-bot">
+            <Form.Control 
+              size="lg"
+              name="email"
+              value={email}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Email"
+            />
+          </Col>
+          <Col  className="margin-top-bot">
+            <Form.Control 
+              size="lg"
+              name="password"
+              value={password}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Mot de passe"
+            />
+         </Col>
+        </Form.Row>
+          <Row className="margin-top-bot justify-content-md-center">
+            <Button 
+            disabled={isInvalid}
+            className="custom-button"
+            size="lg"
+            type="submit">
+            Connexion
+            </Button>
+            {error && <p>{error.message}</p>}
+          </Row>
+        </Form>
+      </>
     );
   }
 }
