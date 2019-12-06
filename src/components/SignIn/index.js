@@ -15,7 +15,7 @@ const SignInPage = () => (
     <SignInForm />
     <PasswordForgetLink />
     <SignUpLink />
-    </Container>
+  </Container>
 );
 
 const INITIAL_STATE = {
@@ -58,9 +58,7 @@ class SignInFormBase extends Component {
 
     return (
       <>
-      <Form 
-        onSubmit={this.onSubmit}
-        >
+      <Form onSubmit={this.onSubmit}>
         <Form.Row>
         <Col  className="margin-top-bot">
             <Form.Control 
