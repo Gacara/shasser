@@ -6,6 +6,9 @@ import { Link, withRouter } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import Proba from '../Table';
+import WithChroma from '../Calcul/WithChroma';
+import WithoutChroma from '../Calcul/WithoutChroma';
 
 const ShassePage = () => (
   <div>
@@ -21,9 +24,11 @@ class ShasseBase extends React.Component{
       img : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].img,
       name : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].name,
       num : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].num,
-      compteur : 0,
+      compteur: 0,
+      capture: false,
+      chroma: false,
       error: '', 
-      user: null
+      user: null,
     };
   }
 
@@ -39,8 +44,12 @@ componentDidMount(){
     firebase.pokemon(userId,pokeName).once("value", function(data) {
       if (data.val()){
       const cpt= data.val().compteur;
+      const chr= data.val().capture;
+      const cap= data.val().chroma;
       path.setState({
       compteur: cpt,
+      capture: cap,
+      chroma: chr,
         }); 
       }
     }); 
@@ -52,9 +61,8 @@ componentWillUnmount() {
   this.props.firebase.pokemon().off();
 };
 
-
-onSubmit(event) {
-  const {  name, num, compteur, img} = this.state;
+onSubmit = (event) => {
+  const { name, num, compteur, img, capture, chroma} = this.state;
   const {firebase} = this.props;
 
   firebase
@@ -63,6 +71,8 @@ onSubmit(event) {
     num,
     img,
     compteur,
+    chroma,
+    capture,
   })
   event.preventDefault();
 };
@@ -101,147 +111,89 @@ handleSubmit(ev){
 }
 
     render(){
-      const {num, name, img, error} = this.state;
+      const {num, name, img, error, compteur, chroma} = this.state;
 
       return (
        
-        
-    <div className="Landing">
-      <div className="Landing-header">
-      <Container>
-        <Row className="justify-content-md-center">
+        <div className="Landing">
+        <div className="Landing-header">
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col sm={4}>
+            </Col>
+          <Col className="d-flex justify-content-center align-items-center" sm={4}>
+            <h2>
+              {`${num} - ${name}`}
+            </h2>
+          </Col>
           <Col sm={4}>
+            <AuthUserContext.Consumer>
+              {authUser =>
+              !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange}onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
+              }
+            </AuthUserContext.Consumer>
           </Col>
-        <Col className="d-flex justify-content-center align-items-center" sm={4}>
-          <h2>
-            {`${num} - ${name}`}
-          </h2>
-        </Col>
-        <Col sm={4}>
-          <AuthUserContext.Consumer>
-            {authUser =>
-            !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange}onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
-            }
-          </AuthUserContext.Consumer>
-        </Col>
-        </Row>
-        
-        <Row className="justify-content-md-center">
-        <Col sm={4}>
-        <Table className="custom-table" striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>Rencontres</th>
-              <th>Sans Chroma</th>
-              <th>Avec Chroma</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>1/4096</td>
-              <td>1/1365</td>
-              
-            </tr>
-            <tr>
-              <td>20</td>
-              <td>1/2048</td>
-              <td>1/1024</td>
-              
-            </tr>
-            <tr>
-              <td>50</td>
-              <td>1/1365</td>
-              <td>1/819</td>
-            </tr>
-            <tr>
-              <td>100</td>
-              <td>1/1024</td>
-              <td>1/682</td>
-            </tr>
-            <tr>
-              <td>200</td>
-              <td>1/819</td>
-              <td>1/585</td>
-            </tr>
-            <tr>
-              <td>500</td>
-              <td>1/682</td>
-              <td>1/512</td>
-            </tr>
-          </tbody>
-        </Table>
-
-        </Col>
-        <Col sm={4}>
-          <Image className="info" src={img} alt={name}/>
-          <h2>Vu :</h2>
-            <input
-            className="custom-input"
-            name="compteur"
-            value={this.state.compteur}
-            onChange={this.onChange}
-            type="number"
-            />
-        </Col>
-        <Col sm={4}>
-        <Table className="custom-table" striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>Masuda </th>
-              <th>Sans Chroma</th>
-              <th>Avec Chroma</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Oeuf</td>
-              <td>1/683</td>
-              <td>1/512</td>
-            </tr>
-          </tbody>
-        </Table>
-        </Col>
-        </Row>
-        <Row className="justify-content-md-center">
-        
-        <Col sm={12}>
-        </Col>
-
-        </Row>
-        <Row className="justify-content-md-center">
-        <Col sm={4}>
-          <button onClick={this.routeChange.bind(this)} className="custom-refresh-button">
-            Retour
-          </button>
-        </Col>
-        <Col sm={5}>sm=6</Col>
-        <Col sm={3}>sm=3</Col>
-        </Row>
-
-
-
-        <Row>
-          <Col xs={12} md={12}>
+          </Row>
           
+          <Row className="justify-content-md-center">
+          <Col sm={4}>
+              <Proba/>
           </Col>
-          <Col xs={6} md={4}>
-            <Bouton
-            title = { "-" }
-            task = { () => this.decrementCount() }
-            />
+          <Col sm={4}>
+            <Image className="info" src={img} alt={name}/>
+            <h2>Vu :</h2>
+              <input
+              className="custom-input"
+              name="compteur"
+              value={this.state.compteur}
+              onChange={this.onChange}
+              type="number"
+              />
           </Col>
-          <Col xs={4} md={4}>
-            
+          <Col sm={4}>
+          <Table className="custom-table" striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th>Masuda </th>
+                <th>Sans Chroma</th>
+                <th>Avec Chroma</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Oeuf</td>
+                <td>1/683</td>
+                <td>1/512</td>
+              </tr>
+            </tbody>
+          </Table>
           </Col>
-          <Col xs={4} md={4}>
-            <Bouton
-            title = { "+" }
-            task = { () => this.incrementCount() }
-            />
+          </Row>
+          <Row className="justify-content-md-center">
+          
+          <Col sm={12}>
           </Col>
-        </Row>
-      </Container>        
+  
+          </Row>
+          <Row className="justify-content-md-center">
+          <Col sm={4}>
+            <button onClick={this.routeChange.bind(this)} className="custom-refresh-button">
+              Retour
+            </button>
+          </Col>
+          <Col sm={4}>    
+            {
+              !{chroma} ? (<WithChroma compteur={compteur} />) : (<WithoutChroma  compteur={compteur} />)  
+            }
+          </Col>
+          <Col sm={4}>
+          <Bouton
+              title = { "+" }
+              task = { () => this.incrementCount() }
+              />
+          </Col>
+          </Row>
+        </Container>  
         </div>
     </div>
   );
@@ -277,8 +229,8 @@ const SubmitPokemon = (props) => (
 
 const SignInLink = () => (
   <p>
-    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter  
-    <Link to={ROUTES.SIGN_IN}> Se connecter</Link>
+    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter 
+    <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
   </p>
 );
 
