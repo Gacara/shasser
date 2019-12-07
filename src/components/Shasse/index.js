@@ -89,7 +89,7 @@ onChange = event => {
   }
     
 
-    this.setState({ [event.target.name]: parseInt(event.target.value, 10)});
+    this.setState({ [event.target.name]: Math.abs(parseInt(event.target.value, 10))});
 };
 
 incrementCount= () => {
@@ -194,7 +194,7 @@ handleSubmit(ev){
           </Col>
           <Col sm={4}>    
             {
-              !{chroma} ? (<WithChroma compteur={compteur} />) : (<WithoutChroma  compteur={compteur} />)  
+              !{chroma} ? <WithChroma compteur={compteur} /> : <WithoutChroma  compteur={compteur} />  
             }
           </Col>
           <Col sm={4}>
