@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Button, Col, Form } from 'react-bootstrap'
+import { Container, Button, Col, Form } from 'react-bootstrap';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 

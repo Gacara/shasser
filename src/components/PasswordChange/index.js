@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Button, Col, Form } from 'react-bootstrap';
 import { withFirebase } from '../Firebase';
 
 const INITIAL_STATE = {
@@ -41,27 +41,44 @@ class PasswordChangeForm extends Component {
       passwordOne !== passwordTwo || passwordOne === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
+      <>
+      <Form 
+        onSubmit={this.onSubmit}
+        >
+        <Form.Row>
+          <Col className="margin-top-bot">
+            <Form.Control 
+              size="lg"
+              name="passwordOne"
+              value={passwordOne}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Nouveau mot de passe"
+            />
+          </Col>
+          <Col className="margin-top-bot">
+            <Form.Control 
+              size="lg"
+              name="passwordTwo"
+              value={passwordTwo}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Confirmer le mot de passe"
+            />
+          </Col>
+          <Col className="margin-top-bot">
+            <Button 
+              disabled={isInvalid}
+              className="custom-button"
+              size="lg"
+              type="submit">
+              Reset mon mot de passe
+            </Button>
+            {error && <p>{error.message}</p>}
+          </Col>
+        </Form.Row>
+      </Form>
+      </>
     );
   }
 }
