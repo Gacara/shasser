@@ -9,6 +9,9 @@ import * as ROUTES from '../../constants/routes';
 import Proba from '../Table';
 import WithChroma from '../Calcul/WithChroma';
 import WithoutChroma from '../Calcul/WithoutChroma';
+import chromaoff from '../../img/chromaoff.png';
+import chromaon from '../../img/chromaon.png';
+
 
 const ShassePage = () => (
   <div>
@@ -44,12 +47,13 @@ componentDidMount(){
     firebase.pokemon(userId,pokeName).once("value", function(data) {
       if (data.val()){
       const cpt= data.val().compteur;
-      const chr= data.val().capture;
-      const cap= data.val().chroma;
+      const chr= data.val().chroma;
+      const cap= data.val().capture;
+      console.log(chr);
       path.setState({
+      chroma: chr,
       compteur: cpt,
       capture: cap,
-      chroma: chr,
         }); 
       }
     }); 
@@ -87,18 +91,16 @@ onChange = event => {
     this.setState({ [event.target.name]: 0 });
     event.target.value = 0;
   }
-    
-
     this.setState({ [event.target.name]: Math.abs(parseInt(event.target.value, 10))});
 };
 
-incrementCount= () => {
+incrementCount = () => {
   this.setState({
     compteur: +this.state.compteur +1,
   })
 }
 
-decrementCount= () => {
+decrementCount = () => {
   this.setState({
     compteur:this.state.compteur-1,
   })
@@ -111,9 +113,15 @@ decrementCount= () => {
 
 handleSubmit(ev){
   this.setState({
-      compteur: new FormData(ev.currentTarget).get('compteur'),
-  });
+    compteur: new FormData(ev.currentTarget).get('compteur'),
+});
   ev.preventDefault();
+}
+
+onToggle = () => {
+  this.setState({
+    chroma: !this.state.chroma,
+  })
 }
 
     render(){
@@ -126,6 +134,23 @@ handleSubmit(ev){
         <Container>
           <Row className="justify-content-md-center">
             <Col sm={4}>
+            {
+              chroma ? 
+              (<Bouton
+                className ="custom-toggle"
+                title = { "Enlever le Charme Chroma" }
+                task = { () => this.onToggle() }
+                />) 
+              : 
+              (<Bouton
+                className ="custom-toggle"
+                title = { "Mettre le Charme Chroma" }
+                task = { () => this.onToggle() }
+                />)  
+            }
+            {
+              chroma ? (<Image className="chroma-img" src={chromaon} alt="chroma-ON"/>) : (<Image className="chroma-img" src={chromaoff} alt="chroma-OFF"/>)
+            }
             </Col>
           <Col className="d-flex justify-content-center align-items-center" sm={4}>
             <h2>
@@ -141,14 +166,13 @@ handleSubmit(ev){
             </AuthUserContext.Consumer>
           </Col>
           </Row>
-          
           <Row className="justify-content-md-center">
           <Col sm={4}>
               <Proba/>
           </Col>
           <Col sm={4}>
             <Image className="info" src={img} alt={name}/>
-            <h2>Vu :</h2>
+            <h2>Rencontres :</h2>
               <input
               className="custom-input"
               name="compteur"
@@ -175,6 +199,7 @@ handleSubmit(ev){
             </tbody>
           </Table>
           <Bouton
+              className="round-button"
               title = { "+" }
               task = { () => this.incrementCount() }
               />
@@ -192,9 +217,11 @@ handleSubmit(ev){
               Retour
             </button>
           </Col>
-          <Col sm={4}>    
+          <Col className="d-flex justify-content-center align-items-center" sm={4}>    
+          <p>Proba Shiny : </p>
+          <p>&nbsp;</p>
             {
-              !{chroma} ? <WithChroma compteur={compteur} /> : <WithoutChroma  compteur={compteur} />  
+              chroma ? <WithChroma compteur={compteur} /> : <WithoutChroma  compteur={compteur} />   
             }
           </Col>
           <Col sm={4}>

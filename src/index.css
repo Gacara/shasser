@@ -202,3 +202,25 @@ input[type=number]::-webkit-outer-spin-button {
 .custom-table tr{
   font-size: 1.25rem;
 }
+
+/* CUSTOM CHECKBOX */
+
+  
+  .custom-toggle{
+  font-weight:bold;
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    border-radius: 15px;
+    color: #ffffff!important;
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 29%, rgba(252,176,69,1) 69%, rgba(81,253,46,1) 100%);
+    padding: 4%;
+    text-decoration: none!important;
+  }
+
+
+  /*CUSTOM IMG CHROMA */
+
+  .chroma-img{
+   width: 30%;
+   padding: 20px 0px;   
+  }
