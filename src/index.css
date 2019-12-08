@@ -214,18 +214,18 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /* CUSTOM CHECKBOX */
-  .custome-toggle-chroma{
+  .custom-toggle-chroma{
     font-weight:bold;
     text-transform: uppercase;
     font-size: 1.3rem;
     border-radius: 15px;
     color: #ffffff!important;
-    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 29%, rgba(252,176,69,1) 69%, rgba(81,253,46,1) 100%);
+    background: black;
     padding: 4%;
     text-decoration: none!important;
   }
 
-  .custome-toggle-capture{
+  .custom-toggle-capture{
     font-weight:bold;
     text-transform: uppercase;
     font-size: 1.3rem;

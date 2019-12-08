@@ -142,13 +142,13 @@ onToggleCapture = () => {
             {
               chroma ? 
               (<Bouton
-                className ="custome-toggle-chroma"
+                className ="custom-toggle-chroma"
                 title = { "Enlever le Charme Chroma" }
                 task = { () => this.onToggleChroma() }
                 />) 
               : 
               (<Bouton
-                className ="custome-toggle-chroma"
+                className ="custom-toggle-chroma"
                 title = { "Mettre le Charme Chroma" }
                 task = { () => this.onToggleChroma() }
                 />)  
@@ -238,13 +238,13 @@ onToggleCapture = () => {
           {
               capture ? 
               (<Bouton
-                className ="custome-toggle-capture"
+                className ="custom-toggle-capture"
                 title = { "Libérer le Shiny" }
                 task = { () => this.onToggleCapture() }
                 />) 
               : 
               (<Bouton
-                className ="custome-toggle-capture"
+                className ="custom-toggle-capture"
                 title = { "Capturer le Shiny" }
                 task = { () => this.onToggleCapture() }
                 />)  
