@@ -51,14 +51,14 @@ html{
 /* BUTTON ROUND */
 .round-button{
   height: auto;
-    width: 80px;
-    border-radius: 50%;
-    font-size: 3rem;
-    color: #ffffff!important;
-    background-color: black;
-    margin: 50px 0 50px 0;
-    text-decoration: none!important;
-
+  width: 150px;
+  border-radius: 50%;
+  font-size: 6rem;
+  color: #ffffff!important;
+  background-color: black;
+  margin: 50px 0 50px 0;
+  text-decoration: none!important;
+  font-family: sans-serif;
 }
 
 /*CARD*/
@@ -69,7 +69,7 @@ html{
 }
 
 .pokemon{
-  width: 75%;
+  width: 100%;
 }
 
 .custom-name{
@@ -85,7 +85,7 @@ html{
   border:0px!important;
   background: rgb(136,94,26);
   background: linear-gradient(0deg, rgba(136,94,26,1) 9%, rgba(95,217,144,1) 18%, rgba(50,255,250,1) 29%, rgba(50,255,250,1) 72%, rgba(255,255,255,1) 82%)!important;
-  width: 25%;
+  width: 75%;
 }
 
 
@@ -138,7 +138,7 @@ html{
     font-size: 3rem;
 }
 
-/* CUSTOM BUTTON refresh*/
+/* CUSTOM REFRESH BUTTON*/
 .custom-refresh-button{
   font-weight:bold;
   text-transform: uppercase;
@@ -146,7 +146,20 @@ html{
   border-radius: 15px;
   color: #ffffff!important;
   background-color: black;
-  padding: 1%;
+  padding: 5%;
+  margin: 50px 0 50px 0;
+  text-decoration: none!important;
+}
+
+/* CUSTOM UPLOAD BUTTON*/
+.custom-upload-button{
+  font-weight:bold;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  border-radius: 15px;
+  color: #ffffff!important;
+  background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 29%, rgba(252,176,69,1) 69%, rgba(81,253,46,1) 100%);
+  padding: 4%;
   margin: 50px 0 50px 0;
   text-decoration: none!important;
 }
@@ -183,6 +196,31 @@ input[type=number]::-webkit-outer-spin-button {
   text-align: center;
 }
 
+
+
+
+/* CUSTOM TABLE */
+.custom-table tr{
+  font-size: 1.25rem;
+}
+
+/* CUSTOM CHECKBOX */
+  .custom-toggle{
+    font-weight:bold;
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    border-radius: 15px;
+    color: #ffffff!important;
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 29%, rgba(252,176,69,1) 69%, rgba(81,253,46,1) 100%);
+    padding: 4%;
+    text-decoration: none!important;
+  }
+
+  /*CUSTOM IMG CHROMA */
+  .chroma-img{
+    width: 30%;
+    padding: 20px 0px;   
+  }
 
 /* CUSTOM SIGNOUT */
 .custom-signout{

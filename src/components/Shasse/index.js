@@ -1,11 +1,17 @@
 import data from '../../data.json';
-import {Image, Container, Row, Col} from 'react-bootstrap'
+import {Image, Container, Row, Col, Table} from 'react-bootstrap'
 import Bouton from '../Bouton';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import Proba from '../Table';
+import WithChroma from '../Calcul/WithChroma';
+import WithoutChroma from '../Calcul/WithoutChroma';
+import chromaoff from '../../img/chromaoff.png';
+import chromaon from '../../img/chromaon.png';
+
 
 const ShassePage = () => (
   <div>
@@ -21,14 +27,15 @@ class ShasseBase extends React.Component{
       img : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].img,
       name : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].name,
       num : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].num,
-      compteur : 0,
+      compteur: 0,
+      capture: false,
+      chroma: false,
       error: '', 
-      user: null
+      user: null,
     };
   }
 
 componentDidMount(){
-
   const {firebase} = this.props;
   firebase.auth.onAuthStateChanged((user) => {
   if (user) {
@@ -40,8 +47,13 @@ componentDidMount(){
     firebase.pokemon(userId,pokeName).once("value", function(data) {
       if (data.val()){
       const cpt= data.val().compteur;
+      const chr= data.val().chroma;
+      const cap= data.val().capture;
+      console.log(chr);
       path.setState({
+      chroma: chr,
       compteur: cpt,
+      capture: cap,
         }); 
       }
     }); 
@@ -54,7 +66,7 @@ componentWillUnmount() {
 };
 
 onSubmit = (event) => {
-  const {  name, num, compteur, img} = this.state;
+  const { name, num, compteur, img, capture, chroma} = this.state;
   const {firebase} = this.props;
 
   firebase
@@ -63,25 +75,36 @@ onSubmit = (event) => {
     num,
     img,
     compteur,
+    chroma,
+    capture,
   })
   event.preventDefault();
 };
 
+routeChange(){
+  const path = `/`;
+  this.props.history.push(path);
+}
+
 onChange = event => {
-  this.setState({ [event.target.name]: event.target.value });
+  if ( !event.target.value){
+    this.setState({ [event.target.name]: 0 });
+    event.target.value = 0;
+  }
+    this.setState({ [event.target.name]: Math.abs(parseInt(event.target.value, 10))});
 };
 
-incrementCount= () => {
+incrementCount = () => {
   this.setState({
     compteur: +this.state.compteur +1,
   })
 }
 
-decrementCount= () => {
+decrementCount = () => {
   this.setState({
     compteur:this.state.compteur-1,
   })
-  if (this.state.compteur <= 0 ){
+  if (this.state.compteur <= 0){
     this.setState({
       compteur:0,
     })
@@ -89,63 +112,122 @@ decrementCount= () => {
 }
 
 handleSubmit(ev){
-  ev.preventDefault();
   this.setState({
-      compteur: new FormData(ev.currentTarget).get('compteur'),
-  });
+    compteur: new FormData(ev.currentTarget).get('compteur'),
+});
+  ev.preventDefault();
+}
+
+onToggle = () => {
+  this.setState({
+    chroma: !this.state.chroma,
+  })
 }
 
     render(){
-      const {num, name, img, error} = this.state;
+      const {num, name, img, error, compteur, chroma} = this.state;
 
       return (
        
-        
-    <div className="Landing">
-      <div className="Landing-header">
-      <Container>
-        <Row>
-          <Col xs={12} md={12}>
-          <h2>
-            {num}
-            -
-            {name}
-          </h2>
-          <Image className="info" src={img} alt={name}/>
-          </Col>
-          <Col xs={6} md={4}>
-            <Bouton
-            title = { "-" }
-            task = { () => this.decrementCount() }
-            />
-          </Col>
-          <Col xs={4} md={4}>
+        <div className="Landing">
+        <div className="Landing-header">
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col sm={4}>
+            {
+              chroma ? 
+              (<Bouton
+                className ="custom-toggle"
+                title = { "Enlever le Charme Chroma" }
+                task = { () => this.onToggle() }
+                />) 
+              : 
+              (<Bouton
+                className ="custom-toggle"
+                title = { "Mettre le Charme Chroma" }
+                task = { () => this.onToggle() }
+                />)  
+            }
+            {
+              chroma ? (<Image className="chroma-img" src={chromaon} alt="chroma-ON"/>) : (<Image className="chroma-img" src={chromaoff} alt="chroma-OFF"/>)
+            }
+            </Col>
+          <Col className="d-flex justify-content-center align-items-center" sm={4}>
             <h2>
-            Vu :
+              {`${num} - ${name}`}
             </h2>
-            <input
-            className="custom-input"
-            name="compteur"
-            value={this.state.compteur}
-            onChange={this.onChange}
-            type="number"
-            />
           </Col>
-          <Col xs={4} md={4}>
-            <Bouton
-            title = { "+" }
-            task = { () => this.incrementCount() }
-            />
+          <Col sm={4}>
+            <AuthUserContext.Consumer>
+              {
+              (authUser) =>
+              !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange} onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
+              }
+            </AuthUserContext.Consumer>
           </Col>
-        </Row>
-      </Container>
-
-<AuthUserContext.Consumer>
-      {authUser =>
-        !authUser ? (<SignInLink/>) : (<SubmitPokemon  onChange={this.onChange}onSubmit={this.onSubmit} name={name} num={num} error={error} />)  
-      }
-    </AuthUserContext.Consumer>
-        <a className="custom-a" href={ROUTES.LANDING}>Retour</a>
+          </Row>
+          <Row className="justify-content-md-center">
+          <Col sm={4}>
+              <Proba/>
+          </Col>
+          <Col sm={4}>
+            <Image className="info" src={img} alt={name}/>
+            <h2>Rencontres :</h2>
+              <input
+              className="custom-input"
+              name="compteur"
+              value={this.state.compteur}
+              onChange={this.onChange}
+              type="number"
+              />
+          </Col>
+          <Col sm={4}>
+          <Table className="custom-table" striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th>Masuda </th>
+                <th>Sans Chroma</th>
+                <th>Avec Chroma</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Oeuf</td>
+                <td>1/683</td>
+                <td>1/512</td>
+              </tr>
+            </tbody>
+          </Table>
+          <Bouton
+              className="round-button"
+              title = { "+" }
+              task = { () => this.incrementCount() }
+              />
+          </Col>
+          </Row>
+          <Row className="justify-content-md-center">
+          
+          <Col sm={12}>
+          </Col>
+  
+          </Row>
+          <Row className="justify-content-md-center">
+          <Col sm={4}>
+            <button onClick={this.routeChange.bind(this)} className="custom-refresh-button">
+              Retour
+            </button>
+          </Col>
+          <Col className="d-flex justify-content-center align-items-center" sm={4}>    
+          <p>Proba Shiny : </p>
+          <p>&nbsp;</p>
+            {
+              chroma ? <WithChroma compteur={compteur} /> : <WithoutChroma  compteur={compteur} />   
+            }
+          </Col>
+          <Col sm={4}>
+          </Col>
+          </Row>
+        </Container>  
         </div>
     </div>
   );
@@ -172,7 +254,7 @@ const SubmitPokemon = (props) => (
     placeholder="pid"
   />
 
-  <button className="custom-refresh-button" type="submit">
+  <button className="custom-upload-button" type="submit">
     Mettre à jour {props.name}
   </button>
   {props.error && <p>{props.error.message}</p>}
@@ -181,8 +263,8 @@ const SubmitPokemon = (props) => (
 
 const SignInLink = () => (
   <p>
-    Pour ajouter des Pokémons à votre dashboard, veuillez vous connecter 
-    <Link to={ROUTES.SIGN_IN}>Se connecter</Link>
+    Pour ajouter des Pokémons à votre dashboard, veuillez vous 
+    <Link to={ROUTES.SIGN_IN}> connecter</Link>
   </p>
 );
 
