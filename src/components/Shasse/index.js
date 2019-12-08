@@ -11,7 +11,7 @@ import WithChroma from '../Calcul/WithChroma';
 import WithoutChroma from '../Calcul/WithoutChroma';
 import chromaoff from '../../img/chromaoff.png';
 import chromaon from '../../img/chromaon.png';
-
+import pokeballopen from '../../img/pokeball.png';
 
 const ShassePage = () => (
   <div>
@@ -49,7 +49,6 @@ componentDidMount(){
       const cpt= data.val().compteur;
       const chr= data.val().chroma;
       const cap= data.val().capture;
-      console.log(chr);
       path.setState({
       chroma: chr,
       compteur: cpt,
@@ -118,14 +117,20 @@ handleSubmit(ev){
   ev.preventDefault();
 }
 
-onToggle = () => {
+onToggleChroma = () => {
   this.setState({
     chroma: !this.state.chroma,
   })
 }
 
+onToggleCapture = () => {
+  this.setState({
+    capture: !this.state.capture,
+  })
+}
+
     render(){
-      const {num, name, img, error, compteur, chroma} = this.state;
+      const {num, name, img, error, compteur, chroma, capture} = this.state;
 
       return (
        
@@ -137,19 +142,19 @@ onToggle = () => {
             {
               chroma ? 
               (<Bouton
-                className ="custom-toggle"
+                className ="custome-toggle-chroma"
                 title = { "Enlever le Charme Chroma" }
-                task = { () => this.onToggle() }
+                task = { () => this.onToggleChroma() }
                 />) 
               : 
               (<Bouton
-                className ="custom-toggle"
+                className ="custome-toggle-chroma"
                 title = { "Mettre le Charme Chroma" }
-                task = { () => this.onToggle() }
+                task = { () => this.onToggleChroma() }
                 />)  
             }
             {
-              chroma ? (<Image className="chroma-img" src={chromaon} alt="chroma-ON"/>) : (<Image className="chroma-img" src={chromaoff} alt="chroma-OFF"/>)
+              chroma ? (<Image rounded className="chroma-img" src={chromaon} alt="chroma-ON"/>) : (<Image rounded className="chroma-img" src={chromaoff} alt="chroma-OFF"/>)
             }
             </Col>
           <Col className="d-flex justify-content-center align-items-center" sm={4}>
@@ -224,8 +229,33 @@ onToggle = () => {
               chroma ? <WithChroma compteur={compteur} /> : <WithoutChroma  compteur={compteur} />   
             }
           </Col>
-          <Col sm={4}>
-          </Col>
+          
+          <AuthUserContext.Consumer>
+              {
+              (authUser) =>
+              !authUser ? (<Col className="d-flex justify-content-center align-items-center" sm={4}><p>Capture impossible sans compte</p></Col>) : 
+              (<Col className="d-flex justify-content-center align-items-center" sm={4}>
+          {
+              capture ? 
+              (<Bouton
+                className ="custome-toggle-capture"
+                title = { "Libérer le Shiny" }
+                task = { () => this.onToggleCapture() }
+                />) 
+              : 
+              (<Bouton
+                className ="custome-toggle-capture"
+                title = { "Capturer le Shiny" }
+                task = { () => this.onToggleCapture() }
+                />)  
+            }
+            {
+              capture ? (<Image className="capture-img" src={pokeballopen} alt="pokeball-OPEN"/>) : (<Image roundedCircle className="capture-img" src={img} alt="pokemon-libre"/>)
+            }
+          </Col>)  
+              }
+            </AuthUserContext.Consumer>
+            
           </Row>
         </Container>  
         </div>
