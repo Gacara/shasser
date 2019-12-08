@@ -68,16 +68,22 @@ html{
   background: linear-gradient(0deg, rgba(136,94,26,1) 9%, rgba(95,217,144,1) 18%, rgba(50,255,250,1) 29%, rgba(50,255,250,1) 72%, rgba(255,255,255,1) 82%)!important;
 }
 
+.custom-card-header{
+  padding: 0 1.25rem 1.25rem 1.25rem!important;
+}
+
 .pokemon{
   width: 100%;
 }
 
 .custom-name{
-  font-weight:bold;
+  display: inline-block;
+  font-weight: bold;
   text-transform: uppercase;
   color: #000000!important;
   font-size: 1.2rem;
   text-decoration: none!important;
+  margin-right: 10px;
 }
 
 /*   INFO  */
@@ -130,7 +136,10 @@ html{
   text-decoration: none!important;
 }
 
-
+.icon{
+  display:inline-block;
+  width:15%;
+}
 
 /* CUSTOM P */
 .custom-p{

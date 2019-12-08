@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import pokeball from '../../img/pokeball.png';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 
@@ -16,7 +16,7 @@ class DashboardPage extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    const {firebase} = this.props;
+    const { firebase } = this.props;
 
     firebase
       .pokemons(firebase.auth.W).on('value', (snapshot) => {
@@ -42,7 +42,7 @@ class DashboardPage extends Component {
   }
 
   componentWillUnmount() {
-    const {firebase} = this.props;
+    const { firebase } = this.props;
     firebase.pokemons(firebase.auth.W).off();
   }
 
@@ -71,12 +71,18 @@ const PokemonList = ({ pokemons }) => (
     {pokemons.map((pokemon) => (
       <div key={pokemon.num} className="col-md-3 col-sm-6 mb-5">
         <a href={`/pokemon/${pokemon.name.toLowerCase()}`} className="card">
-          <div className="card-header">
+          <div className="custom-card-header card-header">
             <p className="custom-name">
               {pokemon.num}
   -
               {pokemon.name}
             </p>
+            {
+                pokemon.capture
+                  ?
+                  (<img className="icon" src={pokeball} alt={pokemon.name} />)
+                  : (<></>)
+              }
             <img className="" src={pokemon.img} alt={pokemon.name} />
           </div>
         </a>
