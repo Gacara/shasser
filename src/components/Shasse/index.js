@@ -24,9 +24,9 @@ class ShasseBase extends React.Component{
   constructor(props) {
     super(props);
     this.state = {  
-      img : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].img,
-      name : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].name,
-      num : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().includes(this.props.match.params.name),)[0].num,
+      img : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().replace(/[. ]/g, '').includes(this.props.match.params.name),)[0].img,
+      name : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().replace(/[. ]/g, '').includes(this.props.match.params.name),)[0].name,
+      num : data.pokemons.filter(pokemons=>pokemons.name.toLowerCase().replace(/[. ]/g, '').includes(this.props.match.params.name),)[0].num,
       compteur: 0,
       capture: false,
       chroma: false,
@@ -41,7 +41,7 @@ componentDidMount(){
   if (user) {
     this.setState({user})
     const userId = this.state.user.uid;
-    const pokeName = this.state.name;
+    const pokeName = this.state.name.replace(/[. ]/g, '');
     const path = this;
     
     firebase.pokemon(userId,pokeName).once("value", function(data) {
@@ -69,7 +69,7 @@ onSubmit = (event) => {
   const {firebase} = this.props;
 
   firebase
-  .pokemon(firebase.auth.W,name)
+  .pokemon(firebase.auth.W,name.replace(/[. ]/g, ''))
   .set({
     num,
     img,
@@ -270,7 +270,7 @@ const SubmitPokemon = (props) => (
   <input
   hidden
     name="name"
-    value={props.name}
+    value={props.name.replace(/[. ]/g,'')}
     onChange={props.onChange}
     type="text"
     placeholder="Name"
